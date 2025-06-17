@@ -8,6 +8,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 
 export default function Signup() {
+
     const [email, setEmail] = useState<string>("")
     const [password, setPassword] = useState<string>("")
     const handleSignup = async (e: React.FormEvent) => {
@@ -15,6 +16,7 @@ export default function Signup() {
         const supabase_data = await supabase.auth.signUp({ email, password })
         console.log(supabase_data)
     }
+
     return (
         <div className="">
             <p className="text-2xl font-medium flex justify-center my-[50px]">Signup page</p>
