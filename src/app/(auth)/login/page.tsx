@@ -1,14 +1,34 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { supabase } from "@/lib/supabase-client";
 import { Label } from "@radix-ui/react-label";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function Login() {
+    const [email, setEmail] = useState<string>("")
+    const [password, setPassword] = useState<string>("")
+    const handleLogin = async (e: React.FormEvent) => {
+        e.preventDefault()
+        const supabase_data = await supabase.auth.signInWithPassword({ email, password })
+        console.log(supabase_data)
+    }
+    const handleGoogleLogin = async (e: React.FormEvent) => {
+        e.preventDefault()
+        const { error, data } = await supabase.auth.signInWithOAuth({
+            provider: "google"
+        })
+        if (error) {
+            alert("error")
+        }
+        console.log(data)
+    }
     return (
         <div className="">
             <p className="text-2xl font-medium flex justify-center my-[50px]">Login page</p>
-            <form className="flex justify-center">
+            <form onSubmit={handleLogin} className="flex justify-center">
                 <Card className="w-full max-w-sm">
                     <CardHeader>
                         <CardTitle>Login to your account</CardTitle>
@@ -28,7 +48,7 @@ export default function Login() {
                                     id="email"
                                     type="email"
                                     placeholder="xyz@example.com"
-                                    required
+                                    onChange={(e) => setEmail(e.target.value)}
                                 />
                             </div>
                             <div className="grid gap-2">
@@ -41,7 +61,7 @@ export default function Login() {
                                         Forgot your password?
                                     </a>
                                 </div>
-                                <Input id="password" type="password" required />
+                                <Input id="password" type="password" onChange={(e) => setPassword(e.target.value)} />
                             </div>
                         </div>
 
@@ -50,7 +70,7 @@ export default function Login() {
                         <Button type="submit" className="w-full">
                             Login
                         </Button>
-                        <Button variant="outline" className="w-full">
+                        <Button onClick={handleGoogleLogin} variant="outline" className="w-full">
                             Login with Google
                         </Button>
                     </CardFooter>
