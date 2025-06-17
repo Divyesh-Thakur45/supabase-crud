@@ -28,7 +28,6 @@ export default function Login() {
                                     id="email"
                                     type="email"
                                     placeholder="xyz@example.com"
-                                    required
                                 />
                             </div>
                             <div className="grid gap-2">
@@ -41,7 +40,7 @@ export default function Login() {
                                         Forgot your password?
                                     </a>
                                 </div>
-                                <Input id="password" type="password" required />
+                                <Input id="password" type="password" />
                             </div>
                         </div>
 
