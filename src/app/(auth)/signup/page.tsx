@@ -1,14 +1,24 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { supabase } from "@/lib/supabase-client";
 import { Label } from "@radix-ui/react-label";
 import Link from "next/link";
+import React, { useState } from "react";
 
 export default function Signup() {
+    const [email, setEmail] = useState<string>("")
+    const [password, setPassword] = useState<string>("")
+    const handleSignup = async (e: React.FormEvent) => {
+        e.preventDefault()
+        const supabase_data = await supabase.auth.signUp({ email, password })
+        console.log(supabase_data)
+    }
     return (
         <div className="">
             <p className="text-2xl font-medium flex justify-center my-[50px]">Signup page</p>
-            <form className="flex justify-center">
+            <form className="flex justify-center" onSubmit={handleSignup}>
                 <Card className="w-full max-w-sm">
                     <CardHeader>
                         <CardTitle>Signup to your account</CardTitle>
@@ -25,10 +35,11 @@ export default function Signup() {
                             <div className="grid gap-2">
                                 <Label htmlFor="email">Email</Label>
                                 <Input
+                                    suppressHydrationWarning
                                     id="email"
                                     type="email"
                                     placeholder="xyz@example.com"
-                                    required
+                                    onChange={(e) => setEmail(e.target.value)}
                                 />
                             </div>
                             <div className="grid gap-2">
@@ -41,18 +52,18 @@ export default function Signup() {
                                         Forgot your password?
                                     </a>
                                 </div>
-                                <Input id="password" type="password" required />
+                                <Input suppressHydrationWarning id="password" type="password" onChange={(e) => setPassword(e.target.value)} />
                             </div>
                         </div>
 
                     </CardContent>
                     <CardFooter className="flex-col gap-2">
-                        <Button type="submit" className="w-full">
+                        <Button suppressHydrationWarning type="submit" className="w-full">
                             Signup
                         </Button>
-                        <Button variant="outline" className="w-full">
+                        {/* <Button suppressHydrationWarning variant="outline" className="w-full">
                             Signup with Google
-                        </Button>
+                        </Button> */}
                     </CardFooter>
                 </Card>
             </form>
